@@ -1,0 +1,68 @@
+class Digit
+{
+  public:
+    Digit () : digit(0) {
+    }
+    Digit (int n) {
+        setDigit(n);
+    }
+    void setDigit (int n) {
+        digit = (n >= 0 && n <= 9) ? n : 0;
+    }
+    int getDigit () {
+        return digit;
+    }
+
+private:
+    int digit;
+};
+
+class IntNumber
+{
+public:
+    IntNumber () {
+        num[0] = 0;
+    }
+    IntNumber (char* n) {
+        size_t i{0};
+        if (n[i] == '-') {
+            sign = true;
+            i++;
+        } else if (n[i] == '+') {
+            sign = false;
+            i++;
+        }
+
+        while (n[i] == '0') {++i;} //ignores all the leading zeros
+
+        size_t j{0};
+        for (; n[i] != '\0'; ++i) {
+            if(n[i] >= '0' && n[i] <= '9') {
+                num[j].setDigit(n[i]-'0');
+                j++;
+                length = j-1;
+            } else //ignores everything after the first non-numerical value
+                break;
+        }
+    }
+    void display () {
+        if (sign && length != 0) {cout << "-";} //displays the negative sign
+
+        for (size_t i{0}; i <= length; ++i) {
+            cout << num[i].getDigit();
+        }
+    }
+private:
+    Digit num[1000];
+    bool sign{};
+    size_t length{};
+};
+
+int main()
+{
+  char num[10000];
+  cin>>num;
+  IntNumber *number = new IntNumber(num);
+  number->display();
+  return 0;
+}
